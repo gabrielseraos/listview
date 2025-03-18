@@ -1,7 +1,17 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+
+import 'controller/produto_controller.dart';
+import 'view/produto_view.dart';
+
+final g = GetIt.instance;
 
 void main() {
-  runApp(const MainApp());
+  g.registerSingleton<ProdutoController>(ProdutoController());
+  runApp(
+    DevicePreview(builder: (context) => const MainApp()),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -9,12 +19,13 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Produtos',
+      initialRoute: 'produtos',
+      routes: {
+        'produtos': (context) => ProdutoView(),
+      },
     );
   }
 }

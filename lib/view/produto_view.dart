@@ -33,14 +33,14 @@ class _ProdutoViewState extends State<ProdutoView> {
         backgroundColor: Colors.blue.shade900,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => ctrl.alterarVisualizacao(true),
             icon: Icon(
               Icons.view_list_outlined,
               color: Colors.white,
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () => ctrl.alterarVisualizacao(false),
             icon: Icon(Icons.grid_view_outlined, color: Colors.white),
           ),
         ],
@@ -52,13 +52,52 @@ class _ProdutoViewState extends State<ProdutoView> {
         padding: EdgeInsets.all(30),
         child: ctrl.visualizarLista ? visualizarLista() : visualizarGrid(),
       ),
+
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue.shade900,
+        foregroundColor: Colors.white,
+        onPressed: () {},
+        child: Icon(Icons.add),
+      ),
     );
   }
 
   Widget visualizarLista() {
     return SizedBox(
+      //height: 100,
       child: ListView.builder(
+        scrollDirection: Axis.vertical,
         itemCount: ctrl.produtos.length,
+        itemBuilder: (context, index) {
+          final item = ctrl.produtos[index];
+          return SizedBox(
+            width: 150,
+            child: Card(
+              child: ListTile(
+                title: Text(item.nome),
+                subtitle: Text('R\$ ${item.preco.toStringAsFixed(2)}'),
+                trailing: IconButton(
+                  icon: Icon(Icons.delete_outline),
+                  onPressed: () => ctrl.removerItem(index),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget visualizarGrid() {
+    return SizedBox(
+      child: GridView.builder(
+        itemCount: ctrl.produtos.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, //número de colunas
+          crossAxisSpacing: 20, //espaçamento entre colunas
+          mainAxisSpacing: 20, // espaçemento entre linhas
+          childAspectRatio: 1.0, // razão aspecto (largura/altura)
+        ),
         itemBuilder: (context, index) {
           final item = ctrl.produtos[index];
           return SizedBox(
@@ -73,9 +112,5 @@ class _ProdutoViewState extends State<ProdutoView> {
         },
       ),
     );
-  }
-
-  Widget visualizarGrid() {
-    return SizedBox();
   }
 }

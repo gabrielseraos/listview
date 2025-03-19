@@ -28,4 +28,9 @@ class ProdutoController extends ChangeNotifier {
     _produtos.removeAt(index);
     notifyListeners();
   }
+
+  void adicionarItem(nome, preco) {
+    _produtos.add(Produto(nome: nome, preco: preco));
+    notifyListeners();
+  }
 }

@@ -56,7 +56,7 @@ class _ProdutoViewState extends State<ProdutoView> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue.shade900,
         foregroundColor: Colors.white,
-        onPressed: () {},
+        onPressed: () => adicionarDialog(),
         child: Icon(Icons.add),
       ),
     );
@@ -111,6 +111,65 @@ class _ProdutoViewState extends State<ProdutoView> {
           );
         },
       ),
+    );
+  }
+
+  void adicionarDialog() {
+    String nome = "";
+    String preco = "";
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Adicionar Produto'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                decoration: InputDecoration(
+                  labelText: 'Nome',
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  nome = value;
+                },
+              ),
+              SizedBox(height: 15),
+              TextField(
+                decoration: InputDecoration(
+                  labelText: 'Preço',
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  preco = value;
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                double p = double.tryParse(preco) ?? 0;
+                ctrl.adicionarItem(nome, p);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Item adicionado com sucesso!'),
+                  ),
+                );
+                Navigator.pop(context);
+              },
+              child: Text('salvar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('cancelar'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
